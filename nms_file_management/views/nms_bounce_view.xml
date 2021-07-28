@@ -1,0 +1,97 @@
+<odoo>
+    <data>
+        <record id="nms_bounce_view_form" model="ir.ui.view">
+            <field name="name">nms_bounce_view_form</field>
+            <field name="model">nms.bounce</field>
+            <field name="arch" type="xml">
+                <form string="nms_bounce_form">
+                    <sheet>
+                        <group>
+                            <group string="Order Information">
+                                <field name="po"/>
+                                <field name="supplier_name"/>
+                            </group>
+                            <group string="Device Information">
+                                <field name="model"/>
+                                <field name="imei"/>
+                                <field name="imei2"/>
+                                <field name="meid_hex"/>
+                                <field name="meid_dec"/>
+                                <field name="model_number"/>
+                                <field name="capacity"/>
+                                <field name="color"/>
+                                <field name="sim_tech"/>
+
+                            </group>
+                        </group>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="nms_bounce_view_tree" model="ir.ui.view">
+            <field name="name">nms_bounce_view_tree</field>
+            <field name="model">nms.bounce</field>
+            <field name="arch" type="xml">
+                <tree string="nms_bounce_tree" editable="top">
+                    <header>
+                        <button name="export_nms" type="object" string="Export NMS"/>
+                        <button name="import_nms" type="object" string="Import NMS"/>
+                    </header>
+                    <field name="po"/>
+                    <field name="supplier_name"/>
+                    <field name="model"/>
+                    <field name="imei"/>
+                    <field name="imei2"/>
+                    <field name="meid_hex"/>
+                    <field name="meid_dec"/>
+                    <field name="model_number"/>
+                    <field name="capacity"/>
+                    <field name="color"/>
+                    <field name="sim_tech"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="nms_bounce_action" model="ir.actions.act_window">
+            <field name="name">NMS Bounce</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">nms.bounce</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_export_nms" model="ir.actions.server">
+            <field name="name">Export NMS</field>
+            <field name="model_id" ref="model_nms_bounce"/>
+            <field name="binding_model_id" ref="model_nms_bounce"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                res = records.export_nms()
+                action = res
+            </field>
+        </record>
+        <record id="action_import_nms" model="ir.actions.server">
+            <field name="name">Import NMS</field>
+            <field name="model_id" ref="model_nms_bounce"/>
+            <field name="binding_model_id" ref="model_nms_bounce"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                res = records.import_nms()
+                action = res
+            </field>
+        </record>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="nms_bounce" name="NMS Bounce" parent="stock.menu_stock_warehouse_mgmt" action="nms_bounce_action"/>
+    </data>
+</odoo>
